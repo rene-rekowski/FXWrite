@@ -47,7 +47,7 @@ public class FXWriterApp extends Application {
         // Szene erstellen
         Scene scene = new Scene(root, 800, 600);
 
-        // Stage konfiguriere
+        // Stage konfigurier
         stage.setTitle("FXWriter");
         stage.setScene(scene);
         stage.show();
