@@ -5,6 +5,9 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
@@ -18,7 +21,7 @@ public class FXWriterApp extends Application {
     private final double padding = 10;
 
     private final int charsPerLine = 80;   // Max Zeichen pro Zeile
-    private final int linesPerPage = 3;   // Max Zeilen pro Seite
+    private final int linesPerPage = 38;   // Max Zeilen pro Seite
 
     @Override
     public void start(Stage stage) {
@@ -41,7 +44,15 @@ public class FXWriterApp extends Application {
         scrollPane.setStyle("-fx-background: gray;");
 
         root.setCenter(scrollPane);
-
+        
+        // menubar
+        MenuBar menuBar = new MenuBar();
+        Menu fileMenu = new Menu("File");
+        MenuItem newItem = new MenuItem("new");
+         menuBar.getMenus().addAll(fileMenu);
+        
+        root.setTop(menuBar);
+        
         Scene scene = new Scene(root, 900, 700);
         stage.setTitle("FXWriter - Mehrseitig");
         stage.setScene(scene);
@@ -119,6 +130,7 @@ public class FXWriterApp extends Application {
 
         pagesContainer.getChildren().add(page);
     }
+    
 
     public static void main(String[] args) {
         launch(args);
