@@ -27,7 +27,7 @@ public class FXWriterApp extends Application {
         MenuItem saveItem = new MenuItem("Speichern");
         MenuItem exitItem = new MenuItem("Beenden");
 
-        // Aktionen
+        // Aktionen 
         newItem.setOnAction(e -> textArea.clear());
         exitItem.setOnAction(e -> stage.close());
 
@@ -47,7 +47,7 @@ public class FXWriterApp extends Application {
         // Szene erstellen
         Scene scene = new Scene(root, 800, 600);
 
-        // Stage konfigurieren
+        // Stage konfiguriere
         stage.setTitle("FXWriter");
         stage.setScene(scene);
         stage.show();
