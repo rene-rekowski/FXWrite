@@ -8,7 +8,7 @@ module FXWirte {
 	requires javafx.controls;
 	requires javafx.fxml;
 
-	opens View to javafx.fxml;
+	opens view to javafx.fxml;
 
-	exports View;
+	exports view;
 }
