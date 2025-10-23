@@ -6,23 +6,31 @@ import javafx.scene.control.MenuItem;
 
 public class MenuBarFactory {
 
-    public static MenuBar createMenuBar(Runnable onNew, Runnable onSave, Runnable onLoad) {
-        MenuBar menuBar = new MenuBar();
+	public static MenuBar createMenuBar(Runnable onNew, Runnable onSave, Runnable onLoad) {
+		MenuBar menuBar = new MenuBar();
 
-        Menu fileMenu = new Menu("File");
+		// File-Menu
+		Menu fileMenu = new Menu("File");
 
-        MenuItem newItem = new MenuItem("New");
-        newItem.setOnAction(e -> onNew.run());
+		MenuItem newItem = new MenuItem("New");
+		newItem.setOnAction(e -> onNew.run());
 
-        MenuItem saveItem = new MenuItem("Save");
-        saveItem.setOnAction(e -> onSave.run());
+		MenuItem saveItem = new MenuItem("Save");
+		saveItem.setOnAction(e -> onSave.run());
 
-        MenuItem loadItem = new MenuItem("Load");
-        loadItem.setOnAction(e -> onLoad.run());
+		MenuItem loadItem = new MenuItem("Load");
+		loadItem.setOnAction(e -> onLoad.run());
 
-        fileMenu.getItems().addAll(newItem, saveItem, loadItem);
-        menuBar.getMenus().add(fileMenu);
+		// Sample-Menu
+		Menu sampleMenu = new Menu("Sample");
 
-        return menuBar;
-    }
+		MenuItem zeitmachineItem = new MenuItem("Zeitmachine");
+		zeitmachineItem.setOnAction(e -> SampleLoader.loadSampleFromResource("/Zeitmaschine-kapitel-1.txt"));
+		
+		sampleMenu.getItems().addAll(zeitmachineItem);
+		fileMenu.getItems().addAll(newItem, saveItem, loadItem);
+		menuBar.getMenus().addAll(fileMenu, sampleMenu);
+
+		return menuBar;
+	}
 }

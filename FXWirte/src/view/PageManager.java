@@ -13,9 +13,9 @@ public class PageManager {
     private final Document document;
 
     // Grenzen für den Seiteninhalt
-    private static final int MAX_CHARS_PER_PAGE = 20; // maximale Zeichen pro Seite
+    private static final int MAX_CHARS_PER_PAGE = 80; // maximale Zeichen pro Seite
     private static final int MAX_LINES_PER_PAGE = 38;   // optionale Begrenzung
-    private static final int MERGE_THRESHOLD = 1500;    // wenn weniger als diese Zeichen, kann zusammengeführt werden
+    private static final int MERGE_THRESHOLD = MAX_CHARS_PER_PAGE/2;    // wenn weniger als diese Zeichen, kann zusammengeführt werden
 
     public PageManager(VBox container, Document document) {
         this.pagesContainer = container;

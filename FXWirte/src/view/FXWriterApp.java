@@ -24,7 +24,8 @@ public class FXWriterApp extends Application {
         pageManager.refreshView();
 
         FXWriterController controller = new FXWriterController(document, pageManager, stage);
-
+        SampleLoader.init(document, pageManager);
+        
         ScrollPane scrollPane = new ScrollPane(pagesContainer);
         scrollPane.setFitToWidth(true);
         scrollPane.setPannable(true);
