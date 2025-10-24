@@ -3,6 +3,7 @@ package controller;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Document;
+import model.FileIO;
 import view.PageManager;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public class FXWriterController {
         File file = chooser.showSaveDialog(stage);
         if (file != null) {
             try {
-                document.saveToFile(file);
+                FileIO.saveToFile(document, file);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -46,7 +47,7 @@ public class FXWriterController {
         File file = chooser.showOpenDialog(stage);
         if (file != null) {
             try {
-                document.loadFromFile(file);
+                FileIO.loadFromFile(document, file);
                 pageManager.refreshView();
             } catch (IOException e) {
                 e.printStackTrace();
