@@ -192,4 +192,11 @@ public class PageManager {
 			document.getPages().remove(document.getPages().size() - 1);
 		}
 	}
+	
+	//getter and setter
+	
+	public VBox getPagesContainer() {
+	    return pagesContainer;
+	}
+
 }
