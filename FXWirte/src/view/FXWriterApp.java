@@ -15,7 +15,8 @@ public class FXWriterApp extends Application {
     @Override
     public void start(Stage stage) {
         Document document = new Document();
-
+        
+        //TODO: maby Css
         VBox pagesContainer = new VBox(20);
         pagesContainer.setStyle("-fx-padding: 20;");
         pagesContainer.setAlignment(Pos.TOP_CENTER);
@@ -37,7 +38,8 @@ public class FXWriterApp extends Application {
         root.setTop(MenuBarFactory.createMenuBar(
                 controller::newDocument,
                 controller::saveDocument,
-                controller::loadDocument
+                controller::loadDocument,
+                pageManager
         ));
 
         Scene scene = new Scene(root, 900, 700);

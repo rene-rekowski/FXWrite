@@ -6,6 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * SampleLoader managed to load out the ressours-file sample texts
+ */
 public class SampleLoader {
     private static Document document;
     private static PageManager pageManager;
@@ -25,7 +28,8 @@ public class SampleLoader {
                 content.append(line).append("\n");
             }
 
-            // Sicherstellen, dass mindestens eine Seite vorhanden ist
+            // check if page exist
+            //TODO: Maby not nessary
             if (document.getPages().isEmpty()) {
                 pageManager.addNewPage();
             }

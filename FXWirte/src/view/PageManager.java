@@ -6,6 +6,7 @@ import model.Document;
 import model.Page;
 
 /**
+ * Managed all inactions with the pages or the documents
  * 
  * @author rene-rekowkski
  * @version 1.0
@@ -32,7 +33,7 @@ public class PageManager {
 	}
 
 	/**
-	 * refrehes the page view to reflect the current ducument staate. rebuild all
+	 * Refreshes the page view to reflect the current document state. rebuild all
 	 * page view from the documents page.
 	 */
 	public void refreshView() {
@@ -84,10 +85,9 @@ public class PageManager {
 		// 🔹 Alle Texte zusammenführen – aber ohne zusätzliches \n am Ende jeder Seite
 		StringBuilder fullText = new StringBuilder();
 		for (Page page : document.getPages()) {
-			String content = page.getContent(); // ❌ kein .trim() mehr hier!
+			String content = page.getContent();
 			if (!content.isEmpty()) {
-				// Entferne nur, wenn letztes Zeichen KEIN Leerzeichen ist, bevor du eins
-				// einfügst
+				// Entferne nur, wenn letztes Zeichen KEIN Leerzeichen ist, bevor du eins einfügst
 				if (fullText.length() > 0 && !fullText.toString().endsWith(" ") && !content.startsWith(" ")) {
 					fullText.append(" "); // Trennt Seiten mit Leerzeichen, aber nicht doppelt
 				}
@@ -107,7 +107,7 @@ public class PageManager {
 
 		while (!textToDistribute.isEmpty()) {
 			int splitIndex = findSplitPoint(textToDistribute);
-			String pageText = textToDistribute.substring(0, splitIndex); // ❌ kein trim hier
+			String pageText = textToDistribute.substring(0, splitIndex);
 			String nextText = textToDistribute.substring(splitIndex).replaceAll("^[\\s\\n]+", "");
 			textToDistribute = nextText;
 
@@ -194,9 +194,12 @@ public class PageManager {
 	}
 	
 	//getter and setter
-	
 	public VBox getPagesContainer() {
 	    return pagesContainer;
+	}
+	
+	public Document getDocument() {
+		return this.document;
 	}
 
 }

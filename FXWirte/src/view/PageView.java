@@ -5,6 +5,9 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import model.Page;
 
+/**
+ * View of the page 
+ */
 public class PageView extends TextArea {
 
     private final Page page;
@@ -15,7 +18,8 @@ public class PageView extends TextArea {
 
     public PageView(Page page) {
         this.page = page;
-
+        
+        //TODO: css
         setWrapText(true);
         setPrefSize(PAGE_WIDTH, PAGE_HEIGHT);
         setMaxSize(PAGE_WIDTH, PAGE_HEIGHT);
