@@ -2,90 +2,96 @@
 
 /* Root background */
 .root {
-    -fx-background-color: #f0f2f5; /* helles Grau */
+	-fx-background-color: #f0f2f5; /* helles Grau */
 }
 
 /* MenuBar */
 .menu-bar {
-    -fx-background-color: linear-gradient(#ffffff, #e9eef6);
-    -fx-padding: 4 8 4 8;
-    -fx-border-color: transparent transparent #d0d7e6 transparent;
-    -fx-border-width: 0 0 1 0;
-    -fx-font-size: 13px;
+	-fx-background-color: linear-gradient(#ffffff, #e9eef6);
+	-fx-padding: 4 8 4 8;
+	-fx-border-color: transparent transparent #d0d7e6 transparent;
+	-fx-border-width: 0 0 1 0;
+	-fx-font-size: 13px;
 }
 
 /* Menu items hover */
 .menu .label {
-    -fx-text-fill: #2b3440;
+	-fx-text-fill: black;
 }
+
 .menu-item:hover {
-    -fx-background-color: rgba(60,100,200,0.06);
+	-fx-background-color: gray;
 }
 
 /* ScrollPane area */
 .scroll-pane {
-    -fx-background: transparent;
+	-fx-background: transparent;
+}
+
+/* Pages container (VBox) */
+.pages-container {
+	-fx-padding: 20;
+	-fx-spacing: 20;
+	-fx-alignment: center;
 }
 
 /* PageView (TextArea) look - entspricht deiner PageView */
 .page-view {
-    -fx-background-color: white;
-    -fx-border-color: #bfc9d8;
-    -fx-border-width: 1;
-    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.08), 6, 0, 0, 2);
-    -fx-font-family: "Courier New", monospace;
-    -fx-font-size: 13pt;
-    -fx-padding: 12;
-    -fx-wrap-text: true;
-    -fx-control-inner-background: white;
-    -fx-text-fill: #222;
+	-fx-background-color: white;
+	-fx-border-color: #cccccc;
+	-fx-border-radius: 10;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0, 0, 3);
+	-fx-font-family: "monospace";
+	-fx-font-size: 18px;
 }
 
 /* Page header / small meta if needed */
 .page-header {
-    -fx-font-size: 0.9em;
-    -fx-text-fill: #555;
-    -fx-padding: 4 0 8 0;
+	-fx-font-size: 0.9em;
+	-fx-text-fill: #555;
+	-fx-padding: 4 0 8 0;
 }
 
 /* Buttons / small controls - generic */
 .button {
-    -fx-background-color: linear-gradient(#eef3ff, #dfeafe);
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-    -fx-border-color: #c7d5f0;
-    -fx-padding: 6 10 6 10;
-    -fx-font-size: 13px;
+	-fx-background-color: linear-gradient(#eef3ff, #dfeafe);
+	-fx-border-radius: 6;
+	-fx-background-radius: 6;
+	-fx-border-color: #c7d5f0;
+	-fx-padding: 6 10 6 10;
+	-fx-font-size: 13px;
 }
 
 /* Small subtle link/images for social icons */
 .icon-link {
-    -fx-cursor: hand;
-    -fx-opacity: 0.95;
+	-fx-cursor: hand;
+	-fx-opacity: 0.95;
 }
+
 .icon-link:hover {
-    -fx-opacity: 1.0;
-    -fx-scale-x: 1.06;
-    -fx-scale-y: 1.06;
+	-fx-opacity: 1.0;
+	-fx-scale-x: 1.06;
+	-fx-scale-y: 1.06;
 }
 
 /* Typewriter caret (nur visuell, du brauchst JS für blink) */
 .typewriter-caret {
-    -fx-border-color: transparent transparent transparent #111;
-    -fx-border-width: 0 0 0 2;
+	-fx-border-color: transparent transparent transparent #111;
+	-fx-border-width: 0 0 0 2;
 }
 
 /* responsive tweaks: limit page width on wide screens */
 .root .page-view {
-    -fx-max-width: 794;
-    -fx-min-width: 794;
-    -fx-pref-width: 794;
-    -fx-pref-height: 1123;
+	-fx-max-width: 794;
+	-fx-min-width: 794;
+	-fx-pref-width: 794;
+	-fx-pref-height: 1123;
 }
 
 /* remove default focus outline and use subtle shadow */
 .text-area:focused {
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-    -fx-effect: dropshadow(one-pass-box, rgba(60,120,210,0.12), 8, 0, 0, 4);
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+	-fx-effect: dropshadow(one-pass-box, rgba(60, 120, 210, 0.12), 8, 0, 0,
+		4);
 }

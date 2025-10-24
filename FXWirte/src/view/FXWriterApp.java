@@ -16,23 +16,25 @@ public class FXWriterApp extends Application {
     public void start(Stage stage) {
         Document document = new Document();
         
-        //TODO: maby Css
-        VBox pagesContainer = new VBox(20);
-        pagesContainer.setStyle("-fx-padding: 20;");
-        pagesContainer.setAlignment(Pos.TOP_CENTER);
 
+        VBox pagesContainer = new VBox(20);
+        pagesContainer.getStyleClass().add("pages-container");
         PageManager pageManager = new PageManager(pagesContainer, document);
         pageManager.refreshView();
 
         FXWriterController controller = new FXWriterController(document, pageManager, stage);
         SampleLoader.init(document, pageManager);
         
-        ScrollPane scrollPane = new ScrollPane(pagesContainer);
+        BorderPane centeredPane = new BorderPane(pagesContainer);
+        BorderPane.setAlignment(pagesContainer, Pos.TOP_CENTER);
+
+        ScrollPane scrollPane = new ScrollPane(centeredPane);
+        scrollPane.getStyleClass().add("scroll-pane");
         scrollPane.setFitToWidth(true);
         scrollPane.setPannable(true);
-        scrollPane.setStyle("-fx-background: gray;");
 
         BorderPane root = new BorderPane(scrollPane);
+
 
         root.setTop(MenuBarFactory.createMenuBar(
                 controller::newDocument,
