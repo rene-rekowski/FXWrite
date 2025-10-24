@@ -3,11 +3,11 @@ package view;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import view.encoder.CoderActions;
+import service.CoderService;
 
 public class MenuBarFactory {
 
-	public static MenuBar createMenuBar(Runnable onNew, Runnable onSave, Runnable onLoad,  PageManager pageManager) {
+	public static MenuBar createMenuBar(Runnable onNew, Runnable onSave, Runnable onLoad, PageManager pageManager) {
 		MenuBar menuBar = new MenuBar();
 
 		// File-Menu
@@ -21,27 +21,27 @@ public class MenuBarFactory {
 
 		MenuItem loadItem = new MenuItem("Load");
 		loadItem.setOnAction(e -> onLoad.run());
-		
-		//Coder-Menu
-		Menu coderMenu = new Menu("Encode/Decode");
-		  // Caesar 
-        MenuItem caesarEncode = new MenuItem("Caesar Encode (+3)");
-        caesarEncode.setOnAction(e -> CoderActions.encodeCaesar(pageManager, 3));
-        MenuItem caesarDecode = new MenuItem("Caesar Decode (-3)");
-        caesarDecode.setOnAction(e -> CoderActions.decodeCaesar(pageManager, 3));
 
-        // LZW Encode
-        MenuItem lzwEncode = new MenuItem("LZW Encode");
-        lzwEncode.setOnAction(e -> CoderActions.encodeLZW(pageManager));
-        MenuItem lzwDecode = new MenuItem("LZW Decode");;
-		lzwDecode.setOnAction(e-> CoderActions.decodeLZW(pageManager));
+		// Coder-Menu
+		Menu coderMenu = new Menu("Encode/Decode");
+		// Caesar
+		MenuItem caesarEncode = new MenuItem("Caesar Encode (+3)");
+		caesarEncode.setOnAction(e -> CoderService.encodeCaesar(pageManager, 3));
+		MenuItem caesarDecode = new MenuItem("Caesar Decode (-3)");
+		caesarDecode.setOnAction(e -> CoderService.decodeCaesar(pageManager, 3));
+		// LZW 
+		MenuItem lzwEncode = new MenuItem("LZW Encode");
+		lzwEncode.setOnAction(e -> CoderService.encodeLZW(pageManager));
+		MenuItem lzwDecode = new MenuItem("LZW Decode");
+		;
+		lzwDecode.setOnAction(e -> CoderService.decodeLZW(pageManager));
 
 		// Sample-Menu
 		Menu sampleMenu = new Menu("Sample");
 		MenuItem zeitmachineItem = new MenuItem("Zeitmachine");
 		zeitmachineItem.setOnAction(e -> SampleLoader.loadSampleFromResource("/Zeitmaschine-kapitel-1.txt"));
-		
-		coderMenu.getItems().addAll(caesarEncode, caesarDecode, lzwEncode,lzwDecode);
+
+		coderMenu.getItems().addAll(caesarEncode, caesarDecode, lzwEncode, lzwDecode);
 		sampleMenu.getItems().addAll(zeitmachineItem);
 		fileMenu.getItems().addAll(newItem, saveItem, loadItem);
 		menuBar.getMenus().addAll(fileMenu, coderMenu, sampleMenu);

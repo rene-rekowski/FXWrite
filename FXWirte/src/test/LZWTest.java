@@ -1,8 +1,10 @@
 package test;
 
 import org.junit.jupiter.api.Test;
+
+import service.LZW;
+
 import static org.junit.jupiter.api.Assertions.*;
-import view.encoder.LZW;
 
 public class LZWTest {
 

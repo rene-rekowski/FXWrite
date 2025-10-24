@@ -1,4 +1,4 @@
-package view.encoder;
+package service;
 
 import view.PageManager;
 import view.PageView;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author rene-rekowski
  * @version 1.0
  */
-public class CoderActions {
+public class CoderService {
 	//Ceaser
     public static void encodeCaesar(PageManager pm, int shift) {
         String allText = getAllText(pm);

@@ -1,13 +1,13 @@
-package view.encoder;
+package service;
 
 /**
- *	encode a string in ceaser code
+ *	encode a string in caeser code
  */
 public class Caesar {
 
     /**
-     * encode a string in ceaser. 
-     * for decoding shift in the other direktion
+     * encode a string in caeser. 
+     * for decoding shift in the other direction!
      * 
      * @param input clean code
      * @param shift num of shift the text
