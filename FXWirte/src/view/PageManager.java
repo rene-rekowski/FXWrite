@@ -15,8 +15,8 @@ public class PageManager {
 	private final VBox pagesContainer;
 	private final Document document;
 
-	private static final int MAX_CHARS_PER_PAGE = 2600;
-	private static final int MAX_LINES_PER_PAGE = 30;
+	private static final int MAX_CHARS_PER_PAGE = 3150;
+	private static final int MAX_LINES_PER_PAGE = 25;
 	private static final int MERGE_THRESHOLD = MAX_CHARS_PER_PAGE / 2;
 
 	public PageManager(VBox container, Document document) {

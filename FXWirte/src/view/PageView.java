@@ -19,23 +19,15 @@ public class PageView extends TextArea {
     public PageView(Page page) {
         this.page = page;
         
-        //TODO: css
         setWrapText(true);
         setPrefSize(PAGE_WIDTH, PAGE_HEIGHT);
-        setMaxSize(PAGE_WIDTH, PAGE_HEIGHT);
-        setMinSize(PAGE_WIDTH, PAGE_HEIGHT);
-        setStyle(
-                "-fx-background-color: white;" +
-                "-fx-border-color: gray;" +
-                "-fx-border-width: 1;" +
-                "-fx-font-family: 'Courier New';" +
-                "-fx-font-size: 14pt;" +
-                "-fx-padding: " + PADDING + ";"
-        );
+        
         setText(page.getContent());
 
         textProperty().addListener((obs, oldText, newText) -> page.setContent(newText));
-
+        
+        getStyleClass().add("page-view");  
+        setText(page.getContent());
         VBox.setMargin(this, new Insets(10, 0, 10, 0));
     }
 

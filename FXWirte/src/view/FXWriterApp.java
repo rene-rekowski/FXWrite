@@ -33,7 +33,6 @@ public class FXWriterApp extends Application {
         scrollPane.setStyle("-fx-background: gray;");
 
         BorderPane root = new BorderPane(scrollPane);
-        root.setStyle("-fx-background-color: gray;");
 
         root.setTop(MenuBarFactory.createMenuBar(
                 controller::newDocument,
@@ -45,6 +44,7 @@ public class FXWriterApp extends Application {
         Scene scene = new Scene(root, 900, 700);
         stage.setTitle("FXWriter");
         stage.setScene(scene);
+        scene.getStylesheets().add(getClass().getResource("/styles/fxwriter.css").toExternalForm());
         stage.show();
     }
 
