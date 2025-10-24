@@ -5,137 +5,191 @@ import javafx.scene.layout.VBox;
 import model.Document;
 import model.Page;
 
-//TODO: sauber durchgehen
-
+/**
+ * 
+ * @author rene-rekowkski
+ * @version 1.0
+ */
 public class PageManager {
+	private final VBox pagesContainer;
+	private final Document document;
 
-    private final VBox pagesContainer;
-    private final Document document;
+	private static final int MAX_CHARS_PER_PAGE = 2600;
+	private static final int MAX_LINES_PER_PAGE = 30;
+	private static final int MERGE_THRESHOLD = MAX_CHARS_PER_PAGE / 2;
 
-    // Grenzen für den Seiteninhalt
-    private static final int MAX_CHARS_PER_PAGE = 80; // maximale Zeichen pro Seite
-    private static final int MAX_LINES_PER_PAGE = 38;   // optionale Begrenzung
-    private static final int MERGE_THRESHOLD = MAX_CHARS_PER_PAGE/2;    // wenn weniger als diese Zeichen, kann zusammengeführt werden
+	public PageManager(VBox container, Document document) {
+		this.pagesContainer = container;
+		this.document = document;
+	}
 
-    public PageManager(VBox container, Document document) {
-        this.pagesContainer = container;
-        this.document = document;
-    }
+	public PageView addNewPage() {
+		Page newPage = document.addPage();
+		PageView view = new PageView(newPage);
+		attachTextListener(view, newPage);
+		pagesContainer.getChildren().add(view);
+		return view;
+	}
 
-    /** Erstellt eine neue Seite im Model und fügt sie als PageView hinzu. */
-    public PageView addNewPage() {
-        Page newPage = document.addPage();
-        PageView view = new PageView(newPage);
-        attachTextListener(view, newPage);
-        pagesContainer.getChildren().add(view);
-        return view;
-    }
+	/**
+	 * refrehes the page view to reflect the current ducument staate. rebuild all
+	 * page view from the documents page.
+	 */
+	public void refreshView() {
+		pagesContainer.getChildren().clear();
+		for (Page page : document.getPages()) {
+			PageView view = new PageView(page);
+			view.setText(page.getContent());
+			attachTextListener(view, page);
+			pagesContainer.getChildren().add(view);
+		}
+		if (document.getPages().isEmpty()) {
+			addNewPage();
+		} else {
+			distributeText();
+		}
+	}
 
-    /** Baut die UI basierend auf dem Document neu auf. */
-    public void refreshView() {
-        pagesContainer.getChildren().clear();
-        for (Page page : document.getPages()) {
-            PageView view = new PageView(page);
-            view.setText(page.getContent());
-            attachTextListener(view, page);
-            pagesContainer.getChildren().add(view);
-        }
-    }
+	/**
+	 * when ever the text change -> update pageModel redistibutes and merge pages
+	 * 
+	 * @param view
+	 * @param model
+	 */
+	private void attachTextListener(PageView view, Page model) {
+		view.textProperty().addListener((obs, oldText, newText) -> {
+			model.setContent(newText);
+			Platform.runLater(() -> {
+				int oldCaretPosition = view.getCaretPosition();
+				int pageIndex = pagesContainer.getChildren().indexOf(view);
 
-    /** Fügt Listener hinzu, um Änderungen im Text zu überwachen. */
-    private void attachTextListener(PageView view, Page model) {
-        view.textProperty().addListener((obs, oldText, newText) -> {
-            model.setContent(newText);
-            Platform.runLater(() -> {
-                handleOverflow(view, model);
-                handleMerge(view, model);
-            });
-        });
-    }
+				distributeText();
+				handleMerge();
 
-    /** Prüft, ob der Text einer Seite zu lang ist, und verschiebt ggf. den Rest auf eine neue. */
-    private void handleOverflow(PageView pageView, Page pageModel) {
-        String text = pageView.getText();
-        int lineCount = text.split("\n").length;
+				if (pageIndex < pagesContainer.getChildren().size()) {
+					PageView newPageView = (PageView) pagesContainer.getChildren().get(pageIndex);
+					newPageView.requestFocus();
+					int newCaretPosition = Math.min(oldCaretPosition, newPageView.getText().length());
+					newPageView.positionCaret(newCaretPosition);
+				}
+			});
+		});
+	}
 
-        if (text.length() > MAX_CHARS_PER_PAGE || lineCount > MAX_LINES_PER_PAGE) {
-            int splitIndex = findSplitPoint(text);
+	/**
+	 * Distributes the entire document text across pages. collect all page content,
+	 * and merge it into a sinle string and spilts that into pages
+	 */
+	private void distributeText() {
+		// 🔹 Alle Texte zusammenführen – aber ohne zusätzliches \n am Ende jeder Seite
+		StringBuilder fullText = new StringBuilder();
+		for (Page page : document.getPages()) {
+			String content = page.getContent(); // ❌ kein .trim() mehr hier!
+			if (!content.isEmpty()) {
+				// Entferne nur, wenn letztes Zeichen KEIN Leerzeichen ist, bevor du eins
+				// einfügst
+				if (fullText.length() > 0 && !fullText.toString().endsWith(" ") && !content.startsWith(" ")) {
+					fullText.append(" "); // Trennt Seiten mit Leerzeichen, aber nicht doppelt
+				}
+				fullText.append(content);
+			}
+		}
 
-            String currentText = text.substring(0, splitIndex);
-            String overflowText = text.substring(splitIndex).trim();
+		document.clear();
+		pagesContainer.getChildren().clear();
 
-            // Aktuelle Seite kürzen
-            pageView.setText(currentText);
-            pageModel.setContent(currentText);
+		String textToDistribute = fullText.toString();
 
-            // Neue Seite mit Resttext hinzufügen
-            Page nextPage = new Page(document.getPages().size() + 1);
-            nextPage.setContent(overflowText);
-            document.getPages().add(nextPage);
+		if (textToDistribute.trim().isEmpty()) {
+			addNewPage();
+			return;
+		}
 
-            PageView nextPageView = new PageView(nextPage);
-            nextPageView.setText(overflowText);
-            attachTextListener(nextPageView, nextPage);
+		while (!textToDistribute.isEmpty()) {
+			int splitIndex = findSplitPoint(textToDistribute);
+			String pageText = textToDistribute.substring(0, splitIndex); // ❌ kein trim hier
+			String nextText = textToDistribute.substring(splitIndex).replaceAll("^[\\s\\n]+", "");
+			textToDistribute = nextText;
 
-            // Neue Seite direkt nach der aktuellen einfügen
-            int currentIndex = pagesContainer.getChildren().indexOf(pageView);
-            pagesContainer.getChildren().add(currentIndex + 1, nextPageView);
+			Page newPage = document.addPage();
+			newPage.setContent(pageText);
 
-            nextPageView.requestFocus();
-            nextPageView.positionCaret(overflowText.length());
-        }
-    }
+			PageView newPageView = new PageView(newPage);
+			newPageView.setText(pageText);
+			attachTextListener(newPageView, newPage);
+			pagesContainer.getChildren().add(newPageView);
+		}
 
-    /** Prüft, ob die aktuelle Seite leer oder unterfüllt ist und ggf. mit der vorherigen Seite zusammengeführt werden kann. */
-    private void handleMerge(PageView pageView, Page pageModel) {
-        int index = pagesContainer.getChildren().indexOf(pageView);
+		if (document.getPages().isEmpty()) {
+			addNewPage();
+		}
+	}
 
-        // Falls es eine vorherige Seite gibt
-        if (index > 0) {
-            PageView previousView = (PageView) pagesContainer.getChildren().get(index - 1);
-            Page previousPage = document.getPages().get(index - 1);
+	/**
+	 * find the point to split string into to pages
+	 * 
+	 * @param text
+	 * @return
+	 */
+	private int findSplitPoint(String text) {
+		int limit = MAX_CHARS_PER_PAGE;
+		if (text.length() <= limit) {
+			return text.length();
+		}
 
-            String currentText = pageView.getText();
-            String previousText = previousView.getText();
+		int lastSpace = text.lastIndexOf(' ', limit);
+		int lastNewline = text.lastIndexOf('\n', limit);
 
-            // Bedingung: Diese Seite ist leer oder sehr kurz, vorherige Seite hat noch Platz
-            if ((currentText.isBlank() || currentText.length() < MERGE_THRESHOLD)
-                    && previousText.length() < MAX_CHARS_PER_PAGE - MERGE_THRESHOLD) {
+		int split = Math.max(lastSpace, lastNewline);
 
-                // Texte zusammenführen
-                String merged = previousText + "\n" + currentText;
-                previousPage.setContent(merged);
-                previousView.setText(merged);
+		if (split != -1) {
+			return split;
+		}
 
-                // Diese Seite entfernen
-                pagesContainer.getChildren().remove(pageView);
-                document.getPages().remove(pageModel);
+		// If no space before the limit, look for the next one after
+		int nextSpace = text.indexOf(' ', limit);
+		if (nextSpace != -1) {
+			return nextSpace;
+		}
 
-                // Fokus auf vorherige Seite setzen
-                previousView.requestFocus();
-                previousView.positionCaret(previousView.getText().length());
-            }
-        }
+		return limit;
+	}
 
-        // Wenn die letzte Seite komplett leer ist (z. B. nach dem Löschen)
-        if (pageView.getText().isBlank() && pagesContainer.getChildren().size() > 1) {
-            pagesContainer.getChildren().remove(pageView);
-            document.getPages().remove(pageModel);
-        }
-    }
+	/**
+	 * check if the next page can merge into one
+	 */
+	private void handleMerge() {
+		int index = 0;
+		while (index < pagesContainer.getChildren().size() - 1) {
+			PageView pageView = (PageView) pagesContainer.getChildren().get(index);
+			PageView nextView = (PageView) pagesContainer.getChildren().get(index + 1);
+			Page pageModel = document.getPages().get(index);
 
-    /** Findet einen sinnvollen Trennpunkt für den Seitenumbruch (Leerzeichen oder Zeilenende). */
-    private int findSplitPoint(String text) {
-        int limit = Math.min(text.length(), MAX_CHARS_PER_PAGE);
-        int lastSpace = text.lastIndexOf(' ', limit);
-        int lastNewline = text.lastIndexOf('\n', limit);
+			String currentText = pageView.getText();
+			String nextText = nextView.getText();
 
-        int split = Math.max(lastSpace, lastNewline);
-        if (split == -1) split = limit; // kein Leerzeichen gefunden
-        return split;
-    }
+			if (nextText.isBlank() || (currentText.length() + nextText.length() < MAX_CHARS_PER_PAGE
+					&& nextText.length() < MERGE_THRESHOLD)) {
+				String merged = (currentText.trim() + " " + nextText.trim()).replaceAll("\\s+", " ").trim();
+				pageModel.setContent(merged);
+				pageView.setText(merged);
 
-    public Document getDocument() {
-        return document;
-    }
+				pagesContainer.getChildren().remove(nextView);
+				document.getPages().remove(index + 1);
+
+				pageView.requestFocus();
+				pageView.positionCaret(pageView.getText().length());
+
+				continue;
+			}
+			index++;
+		}
+		// Remove next page if empty 
+		if (pagesContainer.getChildren().size() > 1
+				&& ((PageView) pagesContainer.getChildren().get(pagesContainer.getChildren().size() - 1)).getText()
+						.isBlank()) {
+			pagesContainer.getChildren().remove(pagesContainer.getChildren().size() - 1);
+			document.getPages().remove(document.getPages().size() - 1);
+		}
+	}
 }
