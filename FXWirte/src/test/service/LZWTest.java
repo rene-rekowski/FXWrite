@@ -1,4 +1,4 @@
-package test;
+package test.service;
 
 import org.junit.jupiter.api.Test;
 
@@ -52,4 +52,28 @@ public class LZWTest {
 
 		assertEquals(original, decoded, "Decoded ASCII range should match original");
 	}
+	
+	@Test
+	void testNullInput() {
+	    assertEquals("", LZW.encode(null));
+	    assertEquals("", LZW.decode(null));
+	}
+	
+	@Test
+	void testRepeatingCharacters() {
+	    String text = "AAAAAA";
+	    String encoded = LZW.encode(text);
+	    String decoded = LZW.decode(encoded);
+	    assertEquals(text, decoded);
+	}
+
+	@Test
+	void testUnicodeCharacters() {
+	    String text = "äöüß漢字";
+	    String encoded = LZW.encode(text);
+	    String decoded = LZW.decode(encoded);
+	    assertEquals(text, decoded);
+	}
+
+
 }

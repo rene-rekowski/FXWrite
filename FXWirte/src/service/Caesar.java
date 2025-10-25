@@ -2,6 +2,9 @@ package service;
 
 /**
  *	encode a string in caeser code
+ *
+ *@author rene-rekowski
+ *@version 1.0
  */
 public class Caesar {
 

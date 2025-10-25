@@ -21,20 +21,29 @@ public class FileIO {
 	}
 
 	public static void loadFromFile(Document document, File file) throws IOException {
-		document.getPages().clear();
-		StringBuilder sb = new StringBuilder();
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.equals("--- PAGE BREAK ---")) {
-					Page page = new Page(document.getPages().size() + 1);
-					page.setContent(sb.toString());
-					document.getPages().add(page);
-					sb = new StringBuilder();
-				} else {
-					sb.append(line).append("\n");
-				}
-			}
-		}
+	    document.getPages().clear();
+	    StringBuilder sb = new StringBuilder();
+
+	    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            if (line.equals("--- PAGE BREAK ---")) {
+	                Page page = new Page(document.getPages().size() + 1);
+	                page.setContent(sb.toString());
+	                document.getPages().add(page);
+	                sb = new StringBuilder();
+	            } else {
+	                sb.append(line).append("\n");
+	            }
+	        }
+	    }
+
+	    // if there more text in buffer, add last page
+	    if (sb.length() > 0 || document.getPages().isEmpty()) {
+	        Page page = new Page(document.getPages().size() + 1);
+	        page.setContent(sb.toString());
+	        document.getPages().add(page);
+	    }
 	}
+
 }
