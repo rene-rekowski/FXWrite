@@ -7,6 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * FileIO handle the loading and saveing system for the documents
+ * 
+ * @author rene-rekowski
+ * @version 1.0
+ */
 public class FileIO {
 
 	public static void saveToFile(Document document, File file) throws IOException {
@@ -38,7 +44,7 @@ public class FileIO {
 	        }
 	    }
 
-	    // if there more text in buffer, add last page
+	    // if there more text in buffer, add on the  last page
 	    if (sb.length() > 0 || document.getPages().isEmpty()) {
 	        Page page = new Page(document.getPages().size() + 1);
 	        page.setContent(sb.toString());

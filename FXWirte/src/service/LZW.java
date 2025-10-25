@@ -14,7 +14,7 @@ public class LZW {
 	/**
 	 * encode a string in lzw
 	 * 
-	 * @param input
+	 * @param input clean code
 	 * @return encodeString
 	 */
 	public static String encode(String input) {
@@ -48,7 +48,7 @@ public class LZW {
 			result.append(dictionary.get(currentString));
 		}
 
-		// Entfernen des nachgestellten Kommas, falls vorhanden
+		//remove if there is an comma at the end
 		if (result.length() > 0 && result.charAt(result.length() - 1) == ',') {
 			result.deleteCharAt(result.length() - 1);
 		}
@@ -74,9 +74,9 @@ public class LZW {
 			dictionary.put(dictSize++, String.valueOf((char) i));
 		}
 
-		// Alle Zeilenumbrüche entfernen, bevor der String aufgeteilt wird
+		// remove every line break
 		String cleanInput = input.replaceAll("\\r\\n|\\r|\\n", "");
-		// check if somestihng writen after delet zeilenumbrüche
+		// check if somestihng writen after delete line break
 		if (cleanInput.isEmpty()) {
 			return "";
 		}

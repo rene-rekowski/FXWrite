@@ -9,6 +9,11 @@ import view.PageManager;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * controller document interaction
+ * 
+ * @author rene-rekowski
+ */
 public class FXWriterController {
 
     private final Document document;

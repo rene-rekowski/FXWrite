@@ -3,6 +3,13 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * represent a document with pages in it
+ * has always one page.
+ * 
+ * @author rene-rekowski
+ * @version 1.0
+ */
 public class Document {
 
 	private final List<Page> pages = new ArrayList<>();

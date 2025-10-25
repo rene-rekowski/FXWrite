@@ -7,6 +7,9 @@ import model.Page;
 
 /**
  * View of the page 
+ * 
+ * @author rene-rekowski
+ * @version 1.0
  */
 public class PageView extends TextArea {
 
@@ -30,7 +33,8 @@ public class PageView extends TextArea {
         setText(page.getContent());
         VBox.setMargin(this, new Insets(10, 0, 10, 0));
     }
-
+    
+    // getter and setter
     public Page getPage() {
         return page;
     }

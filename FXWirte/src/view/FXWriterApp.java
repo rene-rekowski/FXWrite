@@ -10,6 +10,12 @@ import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import model.Document;
 
+/**
+ * start point for the application
+ * 
+ * @author rene-rekowski
+ * @version 1.0
+ */
 public class FXWriterApp extends Application {
 
     @Override

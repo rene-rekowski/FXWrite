@@ -1,5 +1,11 @@
 package model;
 
+/**
+ * represent a page 
+ * 
+ *  @author rene-rekowski
+ *  @version 1.0 
+ */
 public class Page {
     private String content;
     private final int pageNumber;

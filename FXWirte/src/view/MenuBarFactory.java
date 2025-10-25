@@ -5,6 +5,12 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import service.CoderService;
 
+/**
+ * Initialized the menu-bar
+ * 
+ * @author rene-rekowski
+ * @version 1.0
+ */
 public class MenuBarFactory {
 
 	public static MenuBar createMenuBar(Runnable onNew, Runnable onSave, Runnable onLoad, PageManager pageManager) {

@@ -7,7 +7,10 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 /**
- * SampleLoader managed to load out the ressours-file sample texts
+ * SampleLoader managed to load sample out of the resources
+ * 
+ * @author rene-rekowski
+ * @version 1.0
  */
 public class SampleLoader {
     private static Document document;
@@ -34,7 +37,7 @@ public class SampleLoader {
                 pageManager.addNewPage();
             }
 
-            // Den Text in die erste PageView laden, um den Listener zu triggern
+            // load in the first page for tigger the page listener
             PageView firstPageView = (PageView) pageManager.getPagesContainer().getChildren().get(0);
             firstPageView.setText(content.toString());
 
